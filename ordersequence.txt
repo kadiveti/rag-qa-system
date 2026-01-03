@@ -1,0 +1,28 @@
+# Implementation Sequence
+
+## 1. Configuration & Base Utilities
+- [x] .env
+- [x] Logger
+- [x] Config
+
+## 2. Application Core
+- [x] document_parser
+- [X] embedding
+- [X] vector store
+- [X] rag chain
+- [X] rag_evaluator
+
+## 3. API Routes
+- [x] Schema
+- [x] documents
+- [x] Health
+- [x] query
+
+## 4. Initialization & Entry Point
+- [ ] __init__.py (versioning)
+- [ ] Main.py
+
+## 5. Deployment & Verification
+- [ ] Update Main.py from GitHub (first commit baseline)
+- [ ] Bring the service up
+- [ ] Test the services
