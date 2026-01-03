@@ -1,39 +1,41 @@
-''' Application configuration settings using Pydantic '''
+"""Application configuration using pydantic-settings."""
 
-from pydantic_settings import BaseSettings,SettingsConfigDict
 from functools import lru_cache
 
-class Settings(BaseSettings):
-    ''' Application configuration settings '''
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
+class Settings(BaseSettings):
+    """Application settings loaded from environment variables."""
 
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=False, 
-        extra = "ignore"     
+        case_sensitive=False,
+        extra="ignore",
     )
-    # openai api key
+
+    # OpenAI Configuration
     openai_api_key: str
 
-    # qdrant configuration
+    # Qdrant Cloud Configuration
     qdrant_url: str
     qdrant_api_key: str
 
-    #collection name
-    qdrant_collection_name: str = "rag_qa_collection"
+    # Collection Settings
+    collection_name: str = "rag_documents"
 
-    # Document chunk size
+    # Document Processing Settings
     chunk_size: int = 1000
     chunk_overlap: int = 200
-
-    # RETRIEVER SETTINGS
-    retrieval_k: int = 4
 
     # Model Configuration
     embedding_model: str = "text-embedding-3-small"
     llm_model: str = "gpt-4o-mini"
     llm_temperature: float = 0.0
+
+    # Retrieval Settings
+    retrieval_k: int = 4
 
     # Logging
     log_level: str = "INFO"
@@ -53,6 +55,7 @@ class Settings(BaseSettings):
     # Application Info
     app_name: str = "RAG Q&A System"
     app_version: str = "0.1.0"
+
 
 @lru_cache
 def get_settings() -> Settings:

@@ -30,7 +30,6 @@ async def lifespan(app: FastAPI):
     logger = get_logger(__name__)
     logger.info(f"Starting {settings.app_name} v{__version__}")
     logger.info(f"Log level: {settings.log_level}")
-    print(f"Starting {settings.app_name} v{__version__}")
 
     yield
 
@@ -80,6 +79,8 @@ app.include_router(health.router)
 app.include_router(documents.router)
 app.include_router(query.router)
 
+
+
 @app.get("/", tags=["Root"])
 async def root():
     """Root endpoint."""
@@ -88,13 +89,6 @@ async def root():
         "version": __version__,
         "docs": "/docs",
     }
-
-
-@app.get("/", response_class=HTMLResponse, tags=["Root"])
-async def root():
-    """Serve the main UI."""
-    with open("static/index.html", "r") as f:
-        return f.read()
 
 
 @app.exception_handler(Exception)

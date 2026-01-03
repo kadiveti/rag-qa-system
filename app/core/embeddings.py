@@ -1,43 +1,63 @@
-""" Embedding utilities and classes. """
+"""Embedding generation module using OpenAI embeddings."""
 
 from functools import lru_cache
+
 from langchain_openai import OpenAIEmbeddings
+
 from app.config import get_settings
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-@lru_cache()
+
+@lru_cache
 def get_embeddings() -> OpenAIEmbeddings:
-    """Get cached OpenAI embeddings instance."""
+    """Get cached OpenAI embeddings instance.
+
+    Returns:
+        Configured OpenAIEmbeddings instance
+    """
     settings = get_settings()
-    logger.info("Initializing OpenAI Embeddings with model: %s", settings.embedding_model)
+    logger.info(f"Initializing embeddings model: {settings.embedding_model}")
+
     embeddings = OpenAIEmbeddings(
         model=settings.embedding_model,
         openai_api_key=settings.openai_api_key,
     )
-    logger.info("OpenAI Embeddings initialized successfully.")
+
+    logger.info("Embeddings model initialized successfully")
     return embeddings
 
+
 class EmbeddingService:
-    """Service class for handling embeddings."""
+    """Service for generating embeddings."""
 
     def __init__(self):
-        """Initialize the EmbeddingService."""
-        logger.info("Initializing EmbeddingService")
+        """Initialize embedding service."""
         settings = get_settings()
         self.embeddings = get_embeddings()
         self.model_name = settings.embedding_model
 
     def embed_query(self, text: str) -> list[float]:
-        """Generate embeddings for the given text."""
-        logger.debug("Generating embeddings for text of length %d", len(text))
-        embedding_query = self.embeddings.embed_query(text)
-        logger.debug("Generated embedding of length %d", len(embedding))
-        return embedding_query
+        """Generate embedding for a single query.
+
+        Args:
+            text: Query text
+
+        Returns:
+            Embedding vector as list of floats
+        """
+        logger.debug(f"Generating embedding for query: {text[:50]}...")
+        return self.embeddings.embed_query(text)
+
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        """Generate embeddings for a list of documents."""
-        logger.debug("Generating embeddings for %d documents", len(texts))
-        embeddings_document = self.embeddings.embed_documents(texts)
-        logger.debug("Generated embeddings for %d documents", len(embeddings))
-        return embeddings_document
+        """Generate embeddings for multiple documents.
+
+        Args:
+            texts: List of document texts
+
+        Returns:
+            List of embedding vectors
+        """
+        logger.debug(f"Generating embeddings for {len(texts)} documents")
+        return self.embeddings.embed_documents(texts)

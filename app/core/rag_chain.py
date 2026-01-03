@@ -14,6 +14,7 @@ logger = get_logger(__name__)
 settings = get_settings()
 
 
+
 # RAG Prompt Template
 RAG_PROMPT_TEMPLATE = """You are a helpful assistant. Answer the question based on the provided context.
 
@@ -39,6 +40,7 @@ def format_docs(docs: list[Document]) -> str:
         Formatted context string
     """
     return "\n\n---\n\n".join(doc.page_content for doc in docs)
+
 
 
 class RAGChain:
