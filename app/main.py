@@ -30,6 +30,7 @@ async def lifespan(app: FastAPI):
     logger = get_logger(__name__)
     logger.info(f"Starting {settings.app_name} v{__version__}")
     logger.info(f"Log level: {settings.log_level}")
+    print(f"Starting {settings.app_name} v{__version__}")
 
     yield
 
